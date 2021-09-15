@@ -1,14 +1,30 @@
-import PySimpleGUIWx as sg
+import PySimpleGUI as sg
 import gspread
+import os.path
+from time import sleep
+sg.theme("GrayGrayGray")
+ErrorWindow = False
 
+window = sg.Window('Remote Cry Controller:Get Login File', [
+                              [sg.Text('Input Filename of Login File')],
+                              [sg.Input(key="-PathToLogin-"), sg.FileBrowse()],
+                              [sg.OK(), sg.Cancel()]
+                              ],icon="VirusIcon.ico")
 
-sg.theme('DarkBlack')    # Keep things interesting for your users
+while True:
+    sleep(0.01)
+    event, values = window.read()
+    GspreadLoginPath = values['-PathToLogin-']
 
-event, values = sg.Window('Login Window',
-                  [[sg.Text(text="Enter the path to the google sheets registration file",font="Default 12")],[sg.In(key='-PathToLogin-')],
-                  [sg.B('Enter')]],auto_size_text=True,auto_size_buttons=True)
-GspreadLoginPath = values['-PathToLogin-']
-
-if GspreadLoginPath == None:
-    event.close()
-print(f"Gspread Login Path - {GspreadLoginPath}")
+    try:
+        if event == "OK":
+            if os.path.exists(values['-PathToLogin-']):
+                print("LoginPath"+GspreadLoginPath)
+                window.close()
+                break
+            else:
+                sg.popup_error("**** Invalid Filename ****",font="Default 13")
+        elif event != "Cancel":
+            window.close()
+    except:
+        pass
