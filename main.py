@@ -18,8 +18,8 @@ while True:
 
     try:
         if event == "OK":
-            if os.path.exists(values['-PathToLogin-']):
-                print("LoginPath"+GspreadLoginPath)
+            if os.path.exists(GspreadLoginPath):
+                print(f"LoginPath{GspreadLoginPath}")
                 window.close()
                 break
             else:
